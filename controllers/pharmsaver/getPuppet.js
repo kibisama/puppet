@@ -8,7 +8,7 @@ module.exports = async (req, res, next) => {
         break;
       }
     }
-    if (!res.locals.puppetIndex) {
+    if (res.locals.puppetIndex == null) {
       const error = new Error("All Pharmsaver puppets are busy");
       error.status = 503;
       return next(error);
