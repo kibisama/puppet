@@ -32,7 +32,7 @@ module.exports = async (req, res, next) => {
       return next(result);
     }
     res.send({ results: result });
-    next("route");
+    next();
   } catch (e) {
     const error = new CardinalPuppetError(e.message);
     next(error);

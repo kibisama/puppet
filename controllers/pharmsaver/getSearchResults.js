@@ -27,7 +27,7 @@ module.exports = async (req, res, next) => {
       res.send({
         results,
       });
-      next("route");
+      next();
     }
   } catch (e) {
     const error = new PSPuppetError(e.message);

@@ -8,7 +8,7 @@ module.exports = async (req, res, next) => {
     if (reload instanceof CardinalPuppetError) {
       return next(reload);
     }
-    next("route");
+    next();
   } catch (e) {
     const error = new CardinalPuppetError(e.message);
     next(error);

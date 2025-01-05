@@ -8,7 +8,7 @@ module.exports = async (req, res, next) => {
     if (reload instanceof PSPuppetError) {
       return next(reload);
     }
-    next("route");
+    next();
   } catch (e) {
     const error = new PSPuppetError(e.message);
     next(error);

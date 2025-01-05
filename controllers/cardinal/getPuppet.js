@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
       error.status = 503;
       return next(error);
     }
-    next("route");
+    next();
   } catch (e) {
     next(e);
   }
