@@ -101,7 +101,7 @@ const fn = (name, color, waitForOptions) => {
       );
       try {
         const url = `https://vantus.cardinalhealth.com/search?q=${query}`;
-        await this.goto(page, url);
+        await this.goto(page, url, 1000);
         const _xPaths = xPaths.search;
         const resultPromises = [
           page.waitForElement(_xPaths.cin_),
@@ -136,7 +136,7 @@ const fn = (name, color, waitForOptions) => {
       console.log(`${chalk[color](name + ":")} Scraping product details ...`);
       try {
         const url = `https://vantus.cardinalhealth.com/product/${cin}?tab=more-details`;
-        await this.goto(page, url);
+        await this.goto(page, url, 1000);
         const _xPaths = xPaths.product;
         const imgEl = await page.waitForElement(_xPaths.img);
         const results = await page.getBatchData(_xPaths.info);
@@ -163,7 +163,7 @@ const fn = (name, color, waitForOptions) => {
           }
           const currentUrl = page.url();
           const url = currentUrl.replace("more-details", "subs-and-alts");
-          await this.goto(page, url);
+          await this.goto(page, url, 1000);
           const resultPromises = [
             page.waitForElement(_xPaths.noAlts),
             page.waitForElement(_xPaths.alts.cin),
@@ -184,7 +184,7 @@ const fn = (name, color, waitForOptions) => {
           if (result.lastOrdered !== "— —") {
             /* max 100 rows */
             const url = currentUrl.replace("more-details", "purchase-history");
-            await this.goto(page, url);
+            await this.goto(page, url, 1000);
             const last36months = await page.waitForElement(
               _xPaths.last36months
             );
