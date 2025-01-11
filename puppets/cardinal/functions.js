@@ -181,7 +181,9 @@ const fn = (name, color, waitForOptions) => {
             result.alts = results;
           }
 
-          if (result.lastOrdered !== "— —") {
+          if (result.lastOrdered === "— —") {
+            result.purchaseHistory = [];
+          } else {
             /* max 100 rows */
             const url = currentUrl.replace("more-details", "purchase-history");
             await this.goto(page, url, 1000);
