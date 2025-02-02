@@ -31,6 +31,7 @@ module.exports = {
         '//div[@class="product-container page-container"]//p[text()="Orange book code"]/span',
       lastOrdered:
         '//div[@class="product-container page-container"]//div[text()="Last ordered"]/span',
+      invoiceCost: '//div[text()="Invoice cost"]/../h5',
       estNetCost: '//div[text()="Estimated net cost"]/../../h5',
       netUoiCost: '//div[text()="Net UOI cost"]/../div[2]',
       // following two elements contain an inner text of "clear" (false) or "done" (true)
