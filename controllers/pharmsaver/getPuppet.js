@@ -1,4 +1,4 @@
-module.exports = async (req, res, next) => {
+module.exports = (req, res, next) => {
   try {
     const psPuppetsOccupied = req.app.get("psPuppetsOccupied");
     for (let i = 0; i < psPuppetsOccupied.length; i++) {

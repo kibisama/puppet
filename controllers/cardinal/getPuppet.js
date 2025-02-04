@@ -1,4 +1,4 @@
-module.exports = async (req, res, next) => {
+module.exports = (req, res, next) => {
   try {
     const cardinalPuppetsOccupied = req.app.get("cardinalPuppetsOccupied");
     for (let i = 0; i < cardinalPuppetsOccupied.length; i++) {

@@ -19,7 +19,8 @@ module.exports = async (req, res, next) => {
       } else if (!result) {
         const error = new Error(`No results found for "${query}"`);
         error.status = 404;
-        return next(error);
+        next(error);
+        return;
       } else if (result instanceof Error) {
         return next(result);
       }

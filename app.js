@@ -22,7 +22,8 @@ app.use((req, res, next) => {
   next(error);
 });
 
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
+  // an error handler must have four arguments
   if (err.status !== 503) {
     const { puppetIndex, puppetType } = res.locals;
     switch (puppetType) {
