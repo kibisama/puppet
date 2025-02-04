@@ -1,6 +1,5 @@
 const chalk = require("chalk");
 const dayjs = require("dayjs");
-const CardinalPuppetError = require("../../puppets/cardinal/CardinalPuppetError");
 
 module.exports = async (req, res, next) => {
   try {
@@ -18,23 +17,20 @@ module.exports = async (req, res, next) => {
       if (typeof result === "string") {
         cin = result;
       } else if (!result) {
-        const error = new CardinalPuppetError(
-          `No results found for "${query}"`
-        );
+        const error = new Error(`No results found for "${query}"`);
         error.status = 404;
         return next(error);
-      } else if (result instanceof CardinalPuppetError) {
+      } else if (result instanceof Error) {
         return next(result);
       }
     }
     const result = await fn.getProductDetails(page, cin);
-    if (result instanceof CardinalPuppetError) {
+    if (result instanceof Error) {
       return next(result);
     }
     res.send({ results: result });
     next();
   } catch (e) {
-    const error = new CardinalPuppetError(e.message);
-    next(error);
+    next(e);
   }
 };

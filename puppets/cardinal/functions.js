@@ -1,7 +1,5 @@
 const chalk = require("chalk");
 const xPaths = require("./xPaths");
-const CardinalPuppetError = require("./CardinalPuppetError");
-// const dayjs = require("dayjs");
 
 const fn = (name, color, waitForOptions) => {
   return {
@@ -24,7 +22,7 @@ const fn = (name, color, waitForOptions) => {
     },
     /**
      * @param {Page} page
-     * @returns {Promise<undefined|CardinalPuppetError>}
+     * @returns {Promise<undefined|Error>}
      */
     async signIn(page) {
       console.log(`${chalk[color](name + ":")} Signing in to Vantus HQ ...`);
@@ -49,14 +47,14 @@ const fn = (name, color, waitForOptions) => {
           console.log(`${chalk[color](name + ":")} Signed in to Vantus HQ.`);
           return;
         }
-        return new CardinalPuppetError("Failed to sign in to Vantus HQ.");
+        return new Error("Failed to sign in to Vantus HQ.");
       } catch (e) {
-        return new CardinalPuppetError(e.message);
+        return e;
       }
     },
     /**
      * @param {Page} page
-     * @returns {Promise<undefined|CardinalPuppetError>}
+     * @returns {Promise<undefined|Error>}
      */
     async reload(page) {
       console.log(`${chalk[color](name + ":")} Reloading Vantus HQ ...`);
@@ -73,7 +71,7 @@ const fn = (name, color, waitForOptions) => {
             currentUrl.startsWith("https://pdlogin.cardinalhealth.com/signin")
           ) {
             const login = await this.signIn(page);
-            if (login instanceof CardinalPuppetError) {
+            if (login instanceof Error) {
               return login;
             } else {
               reloaded = true;
@@ -83,17 +81,17 @@ const fn = (name, color, waitForOptions) => {
         if (reloaded) {
           console.log(`${chalk[color](name + ":")} Vantus HQ reloaded.`);
         } else {
-          return new CardinalPuppetError("Failed to reload Vantus HQ.");
+          return new Error("Failed to reload Vantus HQ.");
         }
       } catch (e) {
-        return new CardinalPuppetError(e.message);
+        return e;
       }
     },
     /**
      * Returns the first CIN string listed from the search result table.
      * @param {Page} page
      * @param {string} query
-     * @returns {Promise<string|null|CardinalPuppetError>}
+     * @returns {Promise<string|null|Error>}
      */
     async search(page, query) {
       console.log(
@@ -121,16 +119,14 @@ const fn = (name, color, waitForOptions) => {
             return null;
           }
         }
-        return new CardinalPuppetError(
-          `Failed to find search results for "${query}".`
-        );
+        return new Error(`Failed to find search results for "${query}".`);
       } catch (e) {
-        return new CardinalPuppetError(e.message);
+        return e;
       }
     },
     /**
      * @param {Page} page
-     * @returns {Promise<object|CardinalPuppetError>}
+     * @returns {Promise<object|Error>}
      */
     async getProductDetails(page, cin) {
       console.log(`${chalk[color](name + ":")} Scraping product details ...`);
@@ -198,9 +194,9 @@ const fn = (name, color, waitForOptions) => {
           }
           return result;
         }
-        return new CardinalPuppetError(`Failed to scrape product details.`);
+        return new Error(`Failed to scrape product details.`);
       } catch (e) {
-        return new CardinalPuppetError(e.message);
+        return e;
       }
     },
   };

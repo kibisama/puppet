@@ -1,6 +1,5 @@
 const chalk = require("chalk");
 const dayjs = require("dayjs");
-const PSPuppetError = require("../../puppets/pharmsaver/PSPuppetError");
 
 module.exports = async (req, res, next) => {
   try {
@@ -13,15 +12,15 @@ module.exports = async (req, res, next) => {
       )} Retrieving search results for "${ndc11}" ...`
     );
     const search = await fn.search(page, ndc11);
-    if (search instanceof PSPuppetError) {
+    if (search instanceof Error) {
       return next(search);
     } else if (!search) {
-      const error = new PSPuppetError(`No results found for "${ndc11}"`);
+      const error = new Error(`No results found for "${ndc11}"`);
       error.status = 404;
       return next(error);
     } else {
       const results = await fn.getSearchResults(page);
-      if (results instanceof PSPuppetError) {
+      if (results instanceof Error) {
         return next(results);
       }
       res.send({
@@ -30,7 +29,6 @@ module.exports = async (req, res, next) => {
       next();
     }
   } catch (e) {
-    const error = new PSPuppetError(e.message);
     next(error);
   }
 };

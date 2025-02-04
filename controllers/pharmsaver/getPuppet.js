@@ -5,6 +5,7 @@ module.exports = async (req, res, next) => {
       if (!psPuppetsOccupied[i]) {
         psPuppetsOccupied[i] = true;
         res.locals.puppetIndex = i;
+        res.locals.puppetType = "PS";
         break;
       }
     }

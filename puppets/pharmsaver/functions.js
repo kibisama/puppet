@@ -1,6 +1,5 @@
 const chalk = require("chalk");
 const xPaths = require("./xPaths");
-const PSPuppetError = require("./PSPuppetError");
 
 const fn = (name, color, waitForOptions) => {
   return {
@@ -22,7 +21,7 @@ const fn = (name, color, waitForOptions) => {
     },
     /**
      * @param {Page} page
-     * @returns {Promise<undefined|PSPuppetError>}
+     * @returns {Promise<undefined|Error>}
      */
     async signIn(page) {
       console.log(`${chalk[color](name + ":")} Signing in to PharmSaver ...`);
@@ -51,14 +50,14 @@ const fn = (name, color, waitForOptions) => {
           console.log(`${chalk[color](name + ":")} Signed in to PharmSaver.`);
           return;
         }
-        return new PSPuppetError("Failed to sign in to PharmSaver.");
+        return new Error("Failed to sign in to PharmSaver.");
       } catch (e) {
-        return new PSPuppetError(e.message);
+        return e;
       }
     },
     /**
      * @param {Page} page
-     * @returns {Promise<undefined|PSPuppetError>}
+     * @returns {Promise<undefined|Error>}
      */
     async reload(page) {
       console.log(`${chalk[color](name + ":")} Reloading Pharmsaver ...`);
@@ -72,7 +71,7 @@ const fn = (name, color, waitForOptions) => {
         } else {
           if (currentUrl === "https://pharmsaver.net/Login.aspx") {
             const login = await this.signIn(page);
-            if (login instanceof PSPuppetError) {
+            if (login instanceof Error) {
               return login;
             } else {
               reloaded = true;
@@ -82,16 +81,16 @@ const fn = (name, color, waitForOptions) => {
         if (reloaded) {
           console.log(`${chalk[color](name + ":")} Pharmsaver reloaded.`);
         } else {
-          return new PSPuppetError("Failed to reload Pharmsaver.");
+          return new Error("Failed to reload Pharmsaver.");
         }
       } catch (e) {
-        return new PSPuppetError(e.message);
+        return e;
       }
     },
     /**
      * @param {Page} page
      * @param {string} query
-     * @returns {Promise<Boolean|PSPuppetError>}
+     * @returns {Promise<Boolean|Error>}
      */
     async search(page, query) {
       console.log(
@@ -123,14 +122,14 @@ const fn = (name, color, waitForOptions) => {
         } else if (res) {
           return false; // Not found
         }
-        return new PSPuppetError(`Failed to search for "${query}"`);
+        return new Error(`Failed to search for "${query}"`);
       } catch (e) {
-        return new PSPuppetError(e.message);
+        return e;
       }
     },
     /**
      * @param {Page} page
-     * @returns {Promise<object|PSPuppetError>}
+     * @returns {Promise<object|Error>}
      */
     async getSearchResults(page) {
       const _xPaths = xPaths.orderPage;
@@ -138,7 +137,7 @@ const fn = (name, color, waitForOptions) => {
       try {
         return (results = await page.getBatchData(_xPaths.results));
       } catch (e) {
-        return new PSPuppetError(e.message);
+        return e;
       }
     },
   };

@@ -5,6 +5,7 @@ module.exports = async (req, res, next) => {
       if (!cardinalPuppetsOccupied[i]) {
         cardinalPuppetsOccupied[i] = true;
         res.locals.puppetIndex = i;
+        res.locals.puppetType = "CARDINAL";
         break;
       }
     }

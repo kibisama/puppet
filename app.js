@@ -22,17 +22,18 @@ app.use((req, res, next) => {
   next(error);
 });
 
-const CardinalPuppetError = require("./puppets/cardinal/CardinalPuppetError");
-const PSPuppetError = require("./puppets/pharmsaver/PSPuppetError");
 app.use((err, req, res) => {
   if (err.status !== 503) {
-    const { puppetIndex } = res.locals;
-    if (err instanceof CardinalPuppetError) {
-      const cardinalPuppetsOccupied = req.app.get("cardinalPuppetsOccupied");
-      cardinalPuppetsOccupied[puppetIndex] = false;
-    } else if (err instanceof PSPuppetError) {
-      const psPuppetsOccupied = req.app.get("psPuppetsOccupied");
-      psPuppetsOccupied[puppetIndex] = false;
+    const { puppetIndex, puppetType } = res.locals;
+    switch (puppetType) {
+      case "CARDINAL":
+        const cardinalPuppetsOccupied = req.app.get("cardinalPuppetsOccupied");
+        cardinalPuppetsOccupied[puppetIndex] = false;
+        break;
+      case "PS":
+        const psPuppetsOccupied = req.app.get("psPuppetsOccupied");
+        psPuppetsOccupied[puppetIndex] = false;
+      default:
     }
   }
   console.log(err.message);
