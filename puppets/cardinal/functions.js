@@ -11,7 +11,7 @@ const fn = (name, color, waitForOptions) => {
      */
     async goto(page, url, _minWaitingTime) {
       try {
-        const minWaitingTime = _minWaitingTime ?? 0;
+        const minWaitingTime = _minWaitingTime ?? 1000;
         const naviPromise = page.waitForNavigation(waitForOptions);
         await page.goto(url);
         await naviPromise;
@@ -61,7 +61,7 @@ const fn = (name, color, waitForOptions) => {
       try {
         let reloaded = false;
         const url = process.env.CARDINAL_ADDRESS;
-        await this.goto(page, url, 5000);
+        await this.goto(page, url, 3000);
         /* Handle redirection pages */
         const currentUrl = page.url();
         if (currentUrl === "https://vantus.cardinalhealth.com/home") {
@@ -99,7 +99,7 @@ const fn = (name, color, waitForOptions) => {
       );
       try {
         const url = `https://vantus.cardinalhealth.com/search?q=${query}`;
-        await this.goto(page, url, 3000);
+        await this.goto(page, url, 5000);
         const _xPaths = xPaths.search;
         const resultPromises = [
           page.waitForElements([_xPaths.cin, _xPaths.stockStatus]),
