@@ -89,7 +89,6 @@ const extendPage = (page, name, color) => {
         bodyHTMLSize = await page.evaluate(
           () => document.body.innerHTML.length
         );
-
         if (log) {
           console.log(
             `${chalk[color](
