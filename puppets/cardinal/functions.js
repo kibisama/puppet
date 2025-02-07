@@ -99,7 +99,7 @@ const fn = (name, color, waitForOptions) => {
       );
       try {
         const url = `https://vantus.cardinalhealth.com/search?q=${query}`;
-        await this.goto(page, url, 1000);
+        await this.goto(page, url, 3000);
         const _xPaths = xPaths.search;
         const resultPromises = [
           page.waitForElements([_xPaths.cin, _xPaths.stockStatus]),
@@ -136,7 +136,7 @@ const fn = (name, color, waitForOptions) => {
       console.log(`${chalk[color](name + ":")} Scraping product details ...`);
       try {
         const url = `https://vantus.cardinalhealth.com/product/${cin}?tab=more-details`;
-        await this.goto(page, url, 1000);
+        await this.goto(page, url, 3000);
         const _xPaths = xPaths.product;
         const imgEl = await page.waitForElement(_xPaths.img);
         const results = await page.getBatchData(_xPaths.info);
@@ -163,7 +163,7 @@ const fn = (name, color, waitForOptions) => {
           }
           const currentUrl = page.url();
           const url = currentUrl.replace("more-details", "subs-and-alts");
-          await this.goto(page, url, 1000);
+          await this.goto(page, url, 3000);
           const subsAndAlts = await this.scrapeSubsAndAlts(page);
           if (!(subsAndAlts instanceof Error)) {
             result.alts = subsAndAlts;
@@ -175,7 +175,7 @@ const fn = (name, color, waitForOptions) => {
           } else {
             /* max 100 rows */
             const url = currentUrl.replace("more-details", "purchase-history");
-            await this.goto(page, url, 1000);
+            await this.goto(page, url, 3000);
             const last36months = await page.waitForElement(
               _xPaths.last36months
             );
@@ -228,7 +228,7 @@ const fn = (name, color, waitForOptions) => {
       try {
         const _xPaths = xPaths.product;
         const url = `https://vantus.cardinalhealth.com/product/${cin}?tab=subs-and-alts`;
-        await this.goto(page, url, 1000);
+        await this.goto(page, url, 3000);
         const results = await this.scrapeSubsAndAlts(page);
         if (results instanceof Error) {
           return results;
