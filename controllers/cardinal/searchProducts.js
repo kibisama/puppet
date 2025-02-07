@@ -6,30 +6,32 @@ module.exports = async (req, res, next) => {
     const { puppetIndex } = res.locals;
     const { name, color, page, fn } =
       req.app.get("cardinalPuppets")[puppetIndex];
-    let { cin, query } = req.body;
+    const { queries } = req.body;
     console.log(
       `${chalk[color](name + ":")} ${dayjs().format(
         "MM/DD/YY HH:mm:ss"
-      )} Retrieving product details for "${cin ?? query}" ...`
+      )} Searching a product with requested ${
+        queries.length
+      } queries including "${queries[0]}" ...`
     );
-    if (query) {
+    let cin = "";
+    for (let i = 0; i < queries.length; i++) {
       const result = await fn.search(page, query);
       if (typeof result === "string") {
         cin = result;
-      } else if (!result) {
-        const error = new Error(`No results found for "${query}"`);
-        error.status = 404;
-        return next(error);
-      } else if (result instanceof Error) {
-        return next(result);
+        break;
       }
     }
-    const results = await fn.getProductDetails(page, cin);
-    if (results instanceof Error) {
-      return next(results);
+    if (cin) {
+      const results = await fn.getSubsAndAlts(page, cin);
+      if (!(results instanceof Error)) {
+        res.send({ results });
+        return next();
+      }
     }
-    res.send({ results });
-    next();
+    const error = new Error("No results found");
+    error.status = 404;
+    return next(error);
   } catch (e) {
     next(e);
   }

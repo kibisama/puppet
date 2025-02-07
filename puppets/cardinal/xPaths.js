@@ -7,7 +7,9 @@ module.exports = {
   },
   search: {
     noResults: '//div[@class="product-results-found"]',
-    cin_: '//span[@class="body-2 mb-0 text-black cursor-pointer text-decoration-underline"]',
+    /* selects multiple */
+    cin: '//span[@class="body-2 mb-0 text-black cursor-pointer text-decoration-underline"]',
+    stockStatus: "//td[3]//span[3]",
   },
   product: {
     img: "/html/body/div/main/div[5]/div[1]/div[2]/div[1]/div/div/div/div/img",
@@ -82,6 +84,10 @@ module.exports = {
       stockStatus: '//div[@class="product-details__controls"]//span[3]',
       stock:
         '//div[@class="product-details__controls"]//div[@class="d-flex mb-1 align-items-center"]/span[1]',
+      rebateEligible:
+        '//div[@class="product-info"]//strong[text()="Rebate eligible"]/../span',
+      returnable:
+        '//div[@class="product-info"]//strong[text()="Returnable"]/../span',
     },
     /* Purchase history */
     last36months: '//label[text()="Last 36 months"]',
