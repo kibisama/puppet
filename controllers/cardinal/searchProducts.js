@@ -16,6 +16,7 @@ module.exports = async (req, res, next) => {
     );
     let cin = "";
     for (let i = 0; i < queries.length; i++) {
+      const query = queries[i];
       const result = await fn.search(page, query);
       if (typeof result === "string") {
         cin = result;
