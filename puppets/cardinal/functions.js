@@ -113,8 +113,12 @@ const fn = (name, color, waitForOptions) => {
             await page.getInnerTexts(_xPaths.stockStatus)
           )[0];
           const cin = (await page.getInnerTexts(_xPaths.cin))[0];
-          if (stockStatus !== "INELIGIBLE" && cin) {
-            return cin;
+          if (cin) {
+            if (stockStatus !== "INELIGIBLE" && cin) {
+              return cin;
+            } else if (stockStatus === "INELIGIBLE") {
+              return null;
+            }
           }
         } else {
           const result = await page.getInnerTexts(_xPaths.noResults);
