@@ -81,9 +81,10 @@ module.exports = {
       lastOrdered:
         '//div[@class="product-info"]//span[@class="d-flex"]/span[text()="Last ordered"]/../span[2]',
       contract: '//div[@class="title-section"]//strong',
-      stockStatus: '//div[@class="product-details__controls"]//span[3]',
+      stockStatus:
+        '//div[@class="product-details__controls stock-status-padding-dtk-customization"]//span[3]',
       stock:
-        '//div[@class="product-details__controls"]//div[@class="d-flex mb-1 align-items-center"]/span[1]',
+        '//div[@class="product-details__controls stock-status-padding-dtk-customization"]//div[@class="d-flex mb-1 align-items-center"]/span[1]',
       rebateEligible:
         '//div[@class="product-info"]//strong[text()="Rebate eligible"]/../span',
       returnable:

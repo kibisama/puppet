@@ -13,7 +13,7 @@ module.exports = async (options = {}) => {
   const color = options.color ?? "red";
   const waitForOptions = options.waitForOptions ?? {
     timeout: 300000,
-    waitUntil: "networkidle0",
+    waitUntil: "networkidle2",
   };
   const url = process.env.CARDINAL_ADDRESS;
   const fn = functions(name, color, waitForOptions);
