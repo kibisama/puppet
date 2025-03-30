@@ -1,6 +1,10 @@
 const chalk = require("chalk");
 const xPaths = require("./xPaths");
 
+/**
+ * @typedef {import("puppeteer").Page} Page
+ */
+
 const fn = (name, color, waitForOptions) => {
   return {
     /**
@@ -100,16 +104,19 @@ const fn = (name, color, waitForOptions) => {
         /* query value must be 11-digit ndc with no hyphens */
         const url = `https://pharmsaver.net/Pharmacy/Order.aspx?q=${query}`;
         await this.goto(page, url);
+        return await this.interpretSearchResult(page);
+      } catch (e) {
+        return e;
+      }
+    },
+    /**
+     * @param {Page} page
+     * @param {string} query
+     * @returns {Promise<Boolean|Error>}
+     */
+    async interpretSearchResult(page) {
+      try {
         const _xPaths = xPaths.orderPage;
-        /* via typing query in the search input: query can be anything */
-        // const inputEls = await page.waitForElements([
-        //   _xPaths.searchInput,
-        //   _xPaths.searchButton,
-        // ]);
-        // await inputEls[0].type(query);
-        // await inputEls[1].click();
-        // await page.waitForElementFade(xPaths.blockUI);
-        // await page.waitForPageRendering({ minStableSizeIterations: 2 });
         const promises = [
           page.waitForElement(_xPaths.inlineOopsImg),
           page.waitForElement(_xPaths.results.description),
@@ -123,6 +130,47 @@ const fn = (name, color, waitForOptions) => {
           return false; // Not found
         }
         return new Error(`Failed to search for "${query}"`);
+      } catch (e) {
+        return e;
+      }
+    },
+    /**
+     * @param {Page} page
+     * @param {string} query
+     * @returns {Promise<Boolean|Error>}
+     */
+    async textSearch(page, query) {
+      console.log(
+        `${chalk[color](name + ":")} Searching a text "${query}" ...`
+      );
+      try {
+        const _xPaths = xPaths.orderPage;
+        const inputEls = await page.waitForElements([
+          _xPaths.searchInput,
+          _xPaths.searchButton,
+        ]);
+        await inputEls[0].type(query);
+        await inputEls[1].click();
+        await page.waitForElementFade(xPaths.blockUI);
+        await page.waitForPageRendering({ minStableSizeIterations: 2 });
+        return await this.interpretSearchResult(page);
+      } catch (e) {
+        return e;
+      }
+    },
+    /**
+     * @param {Page} page
+     * @returns {Promise<string|Error>}
+     */
+    async getTextSearchValue(page) {
+      try {
+        const searchInput = await page.waitForElement(
+          xPaths.orderPage.searchInput
+        );
+        if (searchInput) {
+          return await (await searchInput.getProperty("value")).jsonValue();
+        }
+        return new Error();
       } catch (e) {
         return e;
       }

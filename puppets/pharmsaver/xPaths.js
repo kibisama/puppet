@@ -6,8 +6,8 @@ module.exports = {
     loginButton: '//input[@value="Login"]',
   },
   orderPage: {
-    // searchInput: '//input[@id= "txtSearchValue"]',
-    // searchButton: '//button[@id= "SearchButton"]',
+    searchInput: '//input[@id= "txtSearchValue"]',
+    searchButton: '//button[@id= "SearchButton"]',
     // Rendered when no results found
     inlineOopsImg: '//img[@id="OopsImg" and @style="display: inline;"]',
     /* Search results */

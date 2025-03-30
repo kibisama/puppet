@@ -2,6 +2,10 @@ const chalk = require("chalk");
 const { Page, ElementHandle } = require("puppeteer");
 
 /**
+ * @typedef {import('puppeteer').ElementHandle} ElementHandle
+ */
+
+/**
  * Adds methods to a Page instance.
  * @param {Page} page
  * @param {string} name name of the puppeteer instance
