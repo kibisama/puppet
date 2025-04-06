@@ -102,23 +102,16 @@ const fn = (name, color, waitForOptions) => {
         await this.goto(page, url);
         const _xPaths = xPaths.search;
         const resultPromises = [
-          page.waitForElements([_xPaths.cin, _xPaths.stockStatus]),
+          page.waitForElement(_xPaths.cin),
           page.waitForElement(_xPaths.noResults),
         ];
         const i = await Promise.any(
           resultPromises.map((p, i) => p.then(() => i))
         );
         if (i === 0) {
-          const stockStatus = (
-            await page.getInnerTexts(_xPaths.stockStatus)
-          )[0];
           const cin = (await page.getInnerTexts(_xPaths.cin))[0];
           if (cin) {
-            if (stockStatus !== "INELIGIBLE" && cin) {
-              return cin;
-            } else if (stockStatus === "INELIGIBLE") {
-              return null;
-            }
+            return cin;
           }
         } else {
           const result = await page.getInnerTexts(_xPaths.noResults);
@@ -230,40 +223,12 @@ const fn = (name, color, waitForOptions) => {
      */
     async getSubsAndAlts(page, cin) {
       try {
-        const _xPaths = xPaths.product;
         const url = `https://vantus.cardinalhealth.com/product/${cin}?tab=subs-and-alts`;
         await this.goto(page, url);
         const results = await this.scrapeSubsAndAlts(page);
         if (results instanceof Error) {
           return results;
         }
-        // const product = {
-        //   name: (await page.getInnerTexts(_xPaths.info.name))[0],
-        //   genericName: (await page.getInnerTexts(_xPaths.info.genericName))[0],
-        //   ndc: (await page.getInnerTexts(_xPaths.info.ndc))[0],
-        //   cin: (await page.getInnerTexts(_xPaths.info.cin))[0],
-        //   upc: (await page.getInnerTexts(_xPaths.info.upc))[0],
-        //   mfr: (await page.getInnerTexts(_xPaths.info.mfr))[0],
-        //   orangeBookCode: (
-        //     await page.getInnerTexts(_xPaths.info.orangeBookCode)
-        //   )[0],
-        //   estNetCost: (await page.getInnerTexts(_xPaths.info.estNetCost))[0],
-        //   netUoiCost: (await page.getInnerTexts(_xPaths.info.netUoiCost))[0],
-        //   lastOrdered: (await page.getInnerTexts(_xPaths.info.lastOrdered))[0],
-        //   stockStatus: (await page.getInnerTexts(_xPaths.info.stockStatus))[0],
-        //   rebateEligible: (
-        //     await page.getInnerTexts(_xPaths.info.rebateEligible)
-        //   )[0],
-        //   returnable: (await page.getInnerTexts(_xPaths.info.returnable))[0],
-        // };
-        // const contract = await page.getInnerTexts(_xPaths.contract);
-        // if (contract[0]) {
-        //   product.contract = contract[0];
-        // }
-        // if (product.stockStatus !== "INELIGIBLE") {
-        //   product.stock = (await page.getInnerTexts(_xPaths.stock))[0];
-        // }
-        // results.push(product);
         return results;
       } catch (e) {
         return e;

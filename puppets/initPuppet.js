@@ -12,7 +12,7 @@ module.exports = async (options = {}) => {
   const color = options.color ?? "white";
   const browserOptions = options.browserOptions ?? {
     defaultViewport: null,
-    headless: true,
+    headless: false,
   };
   console.log(`${chalk[color](name + ":")} Initializing Puppeteer ...`);
   try {

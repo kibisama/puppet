@@ -20,6 +20,7 @@ module.exports = {
       ndc: '//div[@class="product-container page-container"]//p[text()="NDC"]/span',
       cin: '//div[@class="product-container page-container"]//p[text()="CIN"]/span',
       upc: '//div[@class="product-container page-container"]//p[text()="UPC"]/span',
+      mpn: '//div[@class="product-container page-container"]//p[text()="Manufacturer part #"]/span',
       gtin: '//div[@class="product-container page-container"]//p[text()="GTIN"]/span',
       brandName:
         '//div[@class="product-container page-container"]//p[text()="Brand name"]/span',
@@ -43,7 +44,7 @@ module.exports = {
         "/html/body/div/main/div[5]/div[1]/div[2]/div[3]/div/div/div/div/div/div/div/div/div/div[6]/div/div/div[1]/span[3]",
       rx: '//td[@class="tab-table"]//p[text()="Rx"]/span',
       deaSchedule: '//td[@class="tab-table"]//p[text()="DEA schedule"]/span',
-      productType: '//td[@class="tab-table"]//p[text()="Product type"]/span',
+      // productType: '//td[@class="tab-table"]//p[text()="Product type"]/span',
       unitOfMeasure:
         '//td[@class="tab-table"]//p[text()="Unit of measure"]/span',
       refrigerated: '//td[@class="tab-table"]//p[text()="Refrigerated"]/span',
@@ -57,7 +58,7 @@ module.exports = {
     avlAlertButton: '//button[text()="Availability alert"]',
     avlAlertInfo: {
       avlAlertUpdated: '//span[text()="Updated"]/../span[2]',
-      avlAlertMsg: '//span[text()="Message"]/../p',
+      // avlAlertMsg: '//span[text()="Message"]/../p',
       avlAlertAddMsg: '//span[text()="Additional comments"]/../p',
       avlAlertExpected:
         '//span[text()="Expected availability in DC"]/../span[2]',
