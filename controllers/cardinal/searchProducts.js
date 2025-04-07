@@ -25,7 +25,9 @@ module.exports = async (req, res, next) => {
     }
     if (cin) {
       const results = await fn.getSubsAndAlts(page, cin);
-      if (!(results instanceof Error)) {
+      if (results instanceof Error) {
+        return next(results);
+      } else {
         res.send({ results });
         return next();
       }
