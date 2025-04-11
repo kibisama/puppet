@@ -299,7 +299,7 @@ const fn = (name, color, waitForOptions) => {
         await this.goto(page, url, 10000);
         const _xPaths = xPaths.dscsa;
         await page.waitForElement(_xPaths.tableGrid);
-        // await new Promise((r) => setTimeout(r, 500));
+        await new Promise((r) => setTimeout(r, 500));
         const headerButton = await page.waitForElement(_xPaths.headerButton);
         headerButton && (await headerButton.click());
         const downloadButton = await page.waitForElement(
