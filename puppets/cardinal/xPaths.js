@@ -5,6 +5,20 @@ module.exports = {
     passwordInput: '//input[@id="okta-signin-password"]',
     loginButton: '//input[@id="okta-signin-submit"]',
   },
+  header: {
+    reports: '//div[@role="button"]/div[text()="Reports"]',
+    dscsaReport: '//span[text()="DSCSA Serialized Transaction Data Report"]',
+  },
+  dscsa: {
+    tableGrid: '//div[@role="grid"]', // rendered when fully loaded
+    headerButton:
+      '//div[text()="DSCSA Transaction Data History"]/../..//button',
+    downloadButton: '//span[text()="Download data"]',
+    formatOption: '//input[@name="formatOption"]',
+    openInBrowserButton:
+      '//button[text()="Open in Browser" and not(@disabled)]',
+    jsonList: "//li[4]",
+  },
   search: {
     noResults: '//div[@class="product-results-found"]',
     /* selects multiple */
@@ -45,8 +59,7 @@ module.exports = {
       rx: '//td[@class="tab-table"]//p[text()="Rx"]/span',
       deaSchedule: '//td[@class="tab-table"]//p[text()="DEA schedule"]/span',
       // productType: '//td[@class="tab-table"]//p[text()="Product type"]/span',
-      unitOfMeasure:
-        '//td[@class="tab-table"]//p[text()="Unit of measure"]/span',
+      unit: '//td[@class="tab-table"]//p[text()="Billing units"]/span',
       refrigerated: '//td[@class="tab-table"]//p[text()="Refrigerated"]/span',
       serialized: '//td[@class="tab-table"]//p[text()="Serialized"]/span',
     },

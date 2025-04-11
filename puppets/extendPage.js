@@ -224,6 +224,23 @@ const extendPage = (page, name, color) => {
       console.log(`${chalk[color](name + ":")} ${e.message}`);
     }
   };
+  /**
+   * @param {string} xPath
+   * @returns {Promise<undefined>}
+   */
+  page.clickUntilElementFade = async (xPath) => {
+    const interval = 500;
+    try {
+      let targetEl = await page.waitForElement(xPath);
+      while (targetEl) {
+        await targetEl.click();
+        await new Promise((r) => setTimeout(r, interval));
+        targetEl = await page.$(`::-p-xpath(${xPath})`);
+      }
+    } catch (e) {
+      console.log(`${chalk[color](name + ":")} ${e.message}`);
+    }
+  };
   return page;
 };
 

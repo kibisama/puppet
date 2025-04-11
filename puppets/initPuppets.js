@@ -4,10 +4,10 @@ module.exports = async (app) => {
   const puppets = await Promise.all([
     cardinalPuppet({ name: "CARDINAL_1", color: "red" }),
     // cardinalPuppet({ name: "CARDINAL_2", color: "magenta" }),
-    psPuppet(),
+    // psPuppet(),
   ]);
   app.set("cardinalPuppets", [puppets[0]]);
   app.set("cardinalPuppetsOccupied", [false]);
-  app.set("psPuppets", [puppets[1]]);
-  app.set("psPuppetsOccupied", [false]);
+  // app.set("psPuppets", [puppets[1]]);
+  // app.set("psPuppetsOccupied", [false]);
 };

@@ -88,6 +88,25 @@ const fn = (name, color, waitForOptions) => {
       }
     },
     /**
+     * @param {Page} page
+     * @param {string} menuNmae
+     * @param {string} subMenuName
+     * @returns {Pormise<undefined|Error>}
+     */
+    async clickMenu(page, menuName, subMenuName) {
+      try {
+        const _xPaths = xPaths.header;
+        const menu = _xPaths[menuName];
+        const subMenu = _xPaths[subMenuName];
+        const button = await page.waitForElement(menu);
+        await button.click();
+        const subButton = await page.waitForElement(subMenu);
+        await subButton.click();
+      } catch (e) {
+        return e;
+      }
+    },
+    /**
      * Returns the first CIN string listed from the search result table.
      * @param {Page} page
      * @param {string} query
@@ -263,6 +282,33 @@ const fn = (name, color, waitForOptions) => {
           results.push(product);
         }
         return results;
+      } catch (e) {
+        return e;
+      }
+    },
+    /**
+     * @param {Page} page
+     * @param {string} date MM/DD/YYYY
+     * @returns {Pormise<undefined|Error>}
+     */
+    async getDSCSAData(page, date) {
+      // console.log
+      try {
+        const [mm, dd, yyyy] = date.split("/");
+        const url = `https://lookerexternal.cardinalhealth.net/embed/dashboards/track_and_trace::dscsa_serialized_transaction_data_history?Invoice%23=&Delivery+%23=&Item+Number=&NDC=&Lot+Number=&Serial+%23=&PO%23=&Tote+ID+%28GTIN%23%29=&Pallet+ID+%28GTIN%23%29=&Invoice+Date=${yyyy}%2F${mm}%2F${dd}&Ship+To=&Sold+to=&DEA%23=`;
+        await this.goto(page, url, 10000);
+        const _xPaths = xPaths.dscsa;
+        await page.waitForElement(_xPaths.tableGrid);
+        const headerButton = await page.waitForElement(_xPaths.headerButton);
+        headerButton && (await headerButton.click());
+        const downloadButton = await page.waitForElement(
+          _xPaths.downloadButton
+        );
+        downloadButton && (await downloadButton.click());
+        const formatOption = await page.waitForElement(_xPaths.formatOption);
+        formatOption && (await formatOption.click());
+        await page.clickUntilElementFade(_xPaths.jsonList);
+        await page.clickUntilElementFade(_xPaths.openInBrowserButton);
       } catch (e) {
         return e;
       }
