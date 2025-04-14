@@ -309,6 +309,7 @@ const fn = (name, color, waitForOptions) => {
         const formatOption = await page.waitForElement(_xPaths.formatOption);
         formatOption && (await formatOption.click());
         await page.clickUntilElementFade(_xPaths.jsonList);
+        await new Promise((r) => setTimeout(r, 500));
         await page.clickUntilElementFade(_xPaths.openInBrowserButton);
       } catch (e) {
         return e;
