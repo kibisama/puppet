@@ -110,9 +110,10 @@ const fn = (name, color, waitForOptions) => {
      * Returns the first CIN string listed from the search result table.
      * @param {Page} page
      * @param {string} query
+     * @param {boolean} [skipIneligible]
      * @returns {Promise<string|null|Error>}
      */
-    async search(page, query) {
+    async search(page, query, skipIneligible) {
       console.log(
         `${chalk[color](name + ":")} Searching Vantus HQ for "${query}" ...`
       );
@@ -130,6 +131,14 @@ const fn = (name, color, waitForOptions) => {
         if (i === 0) {
           const cin = (await page.getInnerTexts(_xPaths.cin))[0];
           if (cin) {
+            if (skipIneligible) {
+              const stockStatus = (
+                await page.getInnerTexts(_xPaths.stockStatus)
+              )[0];
+              if (stockStatus === "INELIGIBLE") {
+                return null;
+              }
+            }
             return cin;
           }
         } else {

@@ -12,7 +12,8 @@ module.exports = async (options = {}) => {
   const color = options.color ?? "white";
   const browserOptions = options.browserOptions ?? {
     defaultViewport: null,
-    headless: false,
+    args: ["--window-size=1920,1080"],
+    // headless: false,
   };
   console.log(`${chalk[color](name + ":")} Initializing Puppeteer ...`);
   try {
