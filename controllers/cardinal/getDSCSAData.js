@@ -21,12 +21,21 @@ module.exports = async (req, res, next) => {
         (tgt) => tgt.opener() === target
       );
       page2 = await target2.page();
-      await fn.getDSCSAData(page2, date);
-      const target3 = await browser.waitForTarget(
-        (tgt) => tgt.opener() === target2
-      );
-      page3 = await target3.page();
-      await page3.waitForElement("//body");
+      if (await fn.getDSCSAData(page2, date)) {
+        let loop = true;
+        while (loop) {
+          await fn.downloadDSCSAData(page2);
+          let target3 = await browser
+            .waitForTarget((tgt) => tgt.opener() === target2, { timeout: 5000 })
+            .catch(() => (loop = false));
+          if (loop) {
+            page3 = await target3.page();
+            await page3.waitForElement("//body");
+            break;
+          }
+          loop = true;
+        }
+      }
       const json = JSON.parse((await page3.getInnerTexts("//body"))[0]);
       res.send({ results: json });
       await page3.close();

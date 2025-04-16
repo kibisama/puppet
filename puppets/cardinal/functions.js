@@ -298,7 +298,7 @@ const fn = (name, color, waitForOptions) => {
     /**
      * @param {Page} page
      * @param {string} date MM/DD/YYYY
-     * @returns {Pormise<undefined|Error>}
+     * @returns {Pormise<boolean|Error>}
      */
     async getDSCSAData(page, date) {
       // console.log
@@ -306,9 +306,17 @@ const fn = (name, color, waitForOptions) => {
         const [mm, dd, yyyy] = date.split("/");
         const url = `https://lookerexternal.cardinalhealth.net/embed/dashboards/track_and_trace::dscsa_serialized_transaction_data_history?Invoice%23=&Delivery+%23=&Item+Number=&NDC=&Lot+Number=&Serial+%23=&PO%23=&Tote+ID+%28GTIN%23%29=&Pallet+ID+%28GTIN%23%29=&Invoice+Date=${yyyy}%2F${mm}%2F${dd}&Ship+To=&Sold+to=&DEA%23=`;
         await this.goto(page, url, 10000);
+        if (await page.waitForElement(xPaths.dscsa.tableGrid)) {
+          return true;
+        }
+        return false;
+      } catch (e) {
+        return e;
+      }
+    },
+    async downloadDSCSAData(page) {
+      try {
         const _xPaths = xPaths.dscsa;
-        await page.waitForElement(_xPaths.tableGrid);
-        await new Promise((r) => setTimeout(r, 500));
         const headerButton = await page.waitForElement(_xPaths.headerButton);
         headerButton && (await headerButton.click());
         const downloadButton = await page.waitForElement(
@@ -319,7 +327,7 @@ const fn = (name, color, waitForOptions) => {
         formatOption && (await formatOption.click());
         await page.clickUntilElementFade(_xPaths.jsonList);
         await new Promise((r) => setTimeout(r, 500));
-        await page.clickUntilElementFade(_xPaths.openInBrowserButton);
+        (await page.waitForElement(_xPaths.openInBrowserButton)).click();
       } catch (e) {
         return e;
       }
