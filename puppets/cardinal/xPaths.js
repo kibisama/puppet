@@ -22,7 +22,7 @@ module.exports = {
   search: {
     noResults: '//div[@class="product-results-found"]',
     /* selects multiple */
-    cin: '//span[@class="body-2 mb-0 text-black cursor-pointer text-decoration-underline"]',
+    cin: "//tbody/tr/td[4]//span",
     stockStatus: "//td[3]//span[3]",
   },
   product: {
@@ -39,7 +39,7 @@ module.exports = {
       brandName:
         '//div[@class="product-container page-container"]//p[text()="Brand name"]/span',
       mfr: '//div[@class="product-container page-container"]//p[text()="Manufacturer"]/span',
-      amu: '//div[@class="product-container page-container"]//p[text()="Average Monthly Usage (AMU)"]/span',
+      amu: '//div[@class="product-container page-container"]//p[text()="AMU"]/span',
       size: '//div[@class="product-container page-container"]//p[text()="Size"]/span',
       form: '//div[@class="product-container page-container"]//p[text()="Form"]/span',
       strength:
