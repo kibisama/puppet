@@ -107,13 +107,13 @@ const fn = (name, color, waitForOptions) => {
       }
     },
     /**
-     * Returns the first CIN string listed from the search result table.
+     * Returns the CIN string listed from the search result table.
      * @param {Page} page
      * @param {string} query
-     * @param {boolean} [skipIneligible]
-     * @returns {Promise<string|null|Error>}
+     * @param {string} type
+     * @returns {Promise<string|number|Error>}
      */
-    async search(page, query, skipIneligible) {
+    async search(page, query, type) {
       console.log(
         `${chalk[color](name + ":")} Searching Vantus HQ for "${query}" ...`
       );
@@ -129,18 +129,22 @@ const fn = (name, color, waitForOptions) => {
           resultPromises.map((p, i) => p.then(() => i))
         );
         if (i === 0) {
-          const cin = (await page.getInnerTexts(_xPaths.cin))[0];
-          if (cin) {
-            if (skipIneligible) {
-              const stockStatus = (
-                await page.getInnerTexts(_xPaths.stockStatus)
-              )[0];
-              if (stockStatus === "INELIGIBLE") {
-                return null;
+          //
+          const cins = await page.getInnerTexts(_xPaths.cin);
+          switch (type) {
+            case "ndc":
+              const ndcs = await page.getInnerTexts(_xPaths.ndc);
+              for (let i = 0; i < ndcs.length; i++) {
+                if (ndcs[i] === query) {
+                  return cins[i];
+                }
               }
-            }
-            return cin;
+              break;
+            default:
+              return new Error("Invalid type");
           }
+          // results found, but not matching with the given query & type
+          return null;
         } else {
           const result = await page.getInnerTexts(_xPaths.noResults);
           if (result[0]) {
@@ -158,7 +162,9 @@ const fn = (name, color, waitForOptions) => {
      * @returns {Promise<object|Error>}
      */
     async getProductDetails(page, cin) {
-      console.log(`${chalk[color](name + ":")} Scraping product details ...`);
+      console.log(
+        `${chalk[color](name + ":")} Scraping product details "${cin}" ...`
+      );
       try {
         const url = `https://vantus.cardinalhealth.com/product/${cin}?tab=more-details`;
         await this.goto(page, url);

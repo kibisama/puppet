@@ -22,7 +22,8 @@ module.exports = {
   search: {
     noResults: '//div[@class="product-results-found"]',
     /* selects multiple */
-    cin: "//tbody/tr/td[4]//span",
+    cin: "//tbody/tr/td[4]//text()",
+    ndc: "//tbody/tr/td[7]//text()",
     stockStatus: "//td[3]//span[3]",
   },
   product: {
@@ -97,8 +98,9 @@ module.exports = {
       contract: '//div[@class="title-section"]//strong',
       stockStatus:
         '//div[@class="product-details__controls stock-status-padding-dtk-customization"]//span[3]',
-      stock:
-        '//div[@class="product-details__controls stock-status-padding-dtk-customization"]//div[@class="d-flex mb-1 align-items-center"]/span[1]',
+      // stock text is only rendered when the accordion components are opened
+      // stock:
+      //   '//div[@class="product-details__controls stock-status-padding-dtk-customization"]//div[@class="d-flex mb-1 align-items-center"]/span[1]',
       rebateEligible:
         '//div[@class="product-info"]//strong[text()="Rebate eligible"]/../span',
       returnable:
@@ -110,16 +112,16 @@ module.exports = {
     spinnerLoader:
       '//div[@class="table-box-pdp-purchase"]//span[@class="spinner-loader-big"]',
     purchaseHistory: {
-      orderDate: '//table[@id="table_data"]/tbody/tr/td[1]/p',
-      invoiceDate: '//table[@id="table_data"]/tbody/tr/td[2]/p',
-      invoiceCost: '//table[@id="table_data"]/tbody/tr/td[3]/p',
-      orderQty: '//table[@id="table_data"]/tbody/tr/td[5]/p',
-      shipQty: '//table[@id="table_data"]/tbody/tr/td[6]/p',
-      unitCost: '//table[@id="table_data"]/tbody/tr/td[7]/p',
-      orderMethod: '//table[@id="table_data"]/tbody/tr/td[8]/p',
-      poNumber: '//table[@id="table_data"]/tbody/tr/td[9]/p',
-      contract: '//table[@id="table_data"]/tbody/tr/td[10]//strong',
-      invoiceNumber: '//table[@id="table_data"]/tbody/tr/td[4]//span',
+      orderDate: '//table[@id="table_data"]/tbody/tr/td[1]//text()',
+      invoiceDate: '//table[@id="table_data"]/tbody/tr/td[2]//text()',
+      invoiceCost: '//table[@id="table_data"]/tbody/tr/td[3]//text()',
+      orderQty: '//table[@id="table_data"]/tbody/tr/td[5]//text()',
+      shipQty: '//table[@id="table_data"]/tbody/tr/td[6]//text()',
+      unitCost: '//table[@id="table_data"]/tbody/tr/td[7]//text()',
+      orderMethod: '//table[@id="table_data"]/tbody/tr/td[8]//text()',
+      poNumber: '//table[@id="table_data"]/tbody/tr/td[9]//text()',
+      contract: '//table[@id="table_data"]/tbody/tr/td[10]//text()',
+      invoiceNumber: '//table[@id="table_data"]/tbody/tr/td[4]//span//text()',
     },
   },
 };

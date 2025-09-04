@@ -37,7 +37,6 @@ app.use((err, req, res, next) => {
       default:
     }
   }
-  console.log(err.message);
   res.sendStatus(err.status || 500);
 });
 
