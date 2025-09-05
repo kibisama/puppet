@@ -17,25 +17,28 @@ module.exports = async (req, res, next) => {
     let cin = "";
     for (let i = 0; i < queries.length; i++) {
       const query = queries[i];
-      const result = await fn.search(page, query, "ndc", true);
+      const result = await fn.search(page, query, "ndc");
       if (typeof result === "string") {
         cin = result;
         break;
       }
     }
-    if (cin) {
-      const results = await fn.getSubsAndAlts(page, cin);
-      if (results instanceof Error) {
-        return next(results);
-      } else {
-        res.send({ results });
-        return next();
-      }
+    if (!cin) {
+      return res.status(404).send({ code: 404, message: "Not found" });
     }
-    const error = new Error("No results found");
-    error.status = 404;
-    return next(error);
+    //   const results = await fn.getSubsAndAlts(page, cin);
+    //   if (results instanceof Error) {
+    //     return next(results);
+    //   } else {
+    //     res.send({ results });
+    //     return next();
+    //   }
+    // const error = new Error("No results found");
+    // error.status = 404;
+    // return next(error);
+    next();
   } catch (e) {
+    console.error(e);
     next(e);
   }
 };
