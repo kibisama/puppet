@@ -7,6 +7,10 @@ module.exports = async (req, res, next) => {
     const { name, color, page, fn } =
       req.app.get("cardinalPuppets")[puppetIndex];
     const { queries } = req.body;
+    if (!queries.length) {
+      res.status(400).send({ code: 400, message: "Bad Request" });
+      return next();
+    }
     console.log(
       `${chalk[color](name + ":")} ${dayjs().format(
         "MM/DD/YY HH:mm:ss"
@@ -24,18 +28,15 @@ module.exports = async (req, res, next) => {
       }
     }
     if (!cin) {
-      return res.status(404).send({ code: 404, message: "Not found" });
+      res.status(404).send({ code: 404, message: "Not found" });
+      return next();
     }
-    //   const results = await fn.getSubsAndAlts(page, cin);
-    //   if (results instanceof Error) {
-    //     return next(results);
-    //   } else {
-    //     res.send({ results });
-    //     return next();
-    //   }
-    // const error = new Error("No results found");
-    // error.status = 404;
-    // return next(error);
+    const result = await fn.getProductDetails(page, cin);
+    if (result instanceof Error) {
+      res.status(500).send({ code: 500, message: result.message });
+      return next();
+    }
+    res.status(200).send({ code: 200, data: result });
     next();
   } catch (e) {
     console.error(e);
