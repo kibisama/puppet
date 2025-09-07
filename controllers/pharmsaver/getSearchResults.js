@@ -5,13 +5,13 @@ module.exports = async (req, res, next) => {
   try {
     const { puppetIndex } = res.locals;
     const { name, color, page, fn } = req.app.get("psPuppets")[puppetIndex];
-    const { ndc11 } = req.body;
+    const { q } = req.body;
     console.log(
       `${chalk[color](name + ":")} ${dayjs().format(
         "MM/DD/YY HH:mm:ss"
-      )} Retrieving search results for "${ndc11}" ...`
+      )} Retrieving search results for "${q}" ...`
     );
-    const search = await fn.search(page, ndc11);
+    const search = await fn.search(page, q);
     if (search instanceof Error) {
       res.status(500).send({ code: 500, message: search.message });
       return next();
