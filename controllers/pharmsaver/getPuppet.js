@@ -8,10 +8,10 @@ module.exports = (req, res, next) => {
       break;
     }
   }
-  if (res.locals.puppetIndex == null) {
-    const error = new Error("All Pharmsaver puppets are busy");
-    error.status = 503;
-    return next(error);
+  if (res.locals.puppetIndex == undefined) {
+    return res
+      .status(503)
+      .send({ code: 503, message: "All Pharmsaver puppets are busy." });
   }
   next();
 };

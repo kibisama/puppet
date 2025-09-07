@@ -159,6 +159,8 @@ const fn = (name, color, waitForOptions) => {
       }
     },
     /**
+     * Note: Pharmsaver allows (not officially) 10-digit (with no hyphens) ndc search.
+     * The input value in the search bar will be changed to cms ndc.
      * @param {Page} page
      * @returns {Promise<string|Error>}
      */

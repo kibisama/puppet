@@ -5,10 +5,10 @@ module.exports = async (app) => {
     // cardinalPuppet({ name: "CARDINAL_1", color: "red" }),
     cardinalPuppet({ name: "CARDINAL_2", color: "magenta" }),
     // psPuppet({ name: "PHARMSAVER_1", color: "blue" }),
-    // psPuppet({ name: "PHARMSAVER_2", color: "cyan" }),
+    psPuppet({ name: "PHARMSAVER_2", color: "cyan" }),
   ]);
   app.set("cardinalPuppets", [puppets[0]]);
   app.set("cardinalPuppetsOccupied", [false]);
-  // app.set("psPuppets", [puppets[1]]);
-  // app.set("psPuppetsOccupied", [false]);
+  app.set("psPuppets", [puppets[1]]);
+  app.set("psPuppetsOccupied", [false]);
 };
