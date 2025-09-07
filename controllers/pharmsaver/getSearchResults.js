@@ -6,6 +6,10 @@ module.exports = async (req, res, next) => {
     const { puppetIndex } = res.locals;
     const { name, color, page, fn } = req.app.get("psPuppets")[puppetIndex];
     const { q } = req.body;
+    if (!q) {
+      res.status(400).send({ code: 400, message: "Bad Request" });
+      return next();
+    }
     console.log(
       `${chalk[color](name + ":")} ${dayjs().format(
         "MM/DD/YY HH:mm:ss"
