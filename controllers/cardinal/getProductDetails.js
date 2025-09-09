@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
     const { name, color, page, fn } =
       req.app.get("cardinalPuppets")[puppetIndex];
     const { cin, q, type } = req.body;
-    if (!cin && !(q && type)) {
+    if (!(cin || (q && type))) {
       res.status(400).send({ code: 400, message: "Bad Request" });
       return next();
     }
